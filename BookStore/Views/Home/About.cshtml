@@ -1,0 +1,93 @@
+﻿@model IEnumerable<BookStore.Models.Book>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>About Us</h2>
+                    <div class="breadcrumb__option">
+                        <a href="/">Home</a>
+                        <span>About Us</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Blog Section Begin -->
+<section class="blog spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-5">
+                <div class="blog__sidebar">
+                    <div class="blog__sidebar__search">
+                        <form action="#">
+                            <input type="text" placeholder="Search...">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h4>Categories</h4>
+                        <ul>
+                            <li><a href="#">All</a></li>
+                            <li><a href="#">Tragedy (2)</a></li>
+                            <li><a href="#">Fiction (1)</a></li>
+                            <li><a href="#">Romance (1)</a></li>
+                            <li><a href="#">Fantasy (1)</a></li>
+                        </ul>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h4>Search By</h4>
+                        <div class="blog__sidebar__item__tags">
+                            @foreach (var item in Model) { 
+                            <a href="#">@Html.DisplayFor(modelItem => item.Type)</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-7">
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="blog__item">
+                                <div class="blog__item__pic">
+                                    <img style="width:10%; height:35vh" src="@Html.DisplayFor(modelItem => item.Image)" alt="">
+                                </div>
+                                <div class="blog__item__text">
+                                    <ul>
+                                        <li><i class="fa fa-calendar-o"></i> @Html.DisplayFor(modelItem => item.CreatedDate)</li>
+                                        <li><i class="fa fa-comment-o"></i> @Html.DisplayFor(modelItem => item.Type)</li>
+                                    </ul>
+                                    <h5><a href="#">@Html.DisplayFor(modelItem => item.Title)</a></h5>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </p>
+                                    <h2>$ @Html.DisplayFor(modelItem => item.Price)</h2>
+                                    <a href="/book/details/@Html.DisplayFor(modelItem => item.BookId)" class="blog__btn">READ MORE <i class="fa fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                        <div class="col-lg-12">
+                            <div class="product__pagination blog__pagination">
+                                <a href="#">1</a>
+                                <a href="#">2</a>
+                                <a href="#">3</a>
+                                <a href="#"><i class="fa fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Section End -->
