@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -15,10 +16,10 @@ namespace BookStore.Controllers
         private BookDbContext db = new BookDbContext();
 
         // GET: Book
+        [Authorize(Roles = "Admin, Staff")]
         public ActionResult Index()
         {
-            var books = db.Books.OrderByDescending(p => p.CreatedDate);
-            //we pass posts.ToList() as the value for the Model variable
+            var books = db.Books.Include(b => b.Category).OrderByDescending(p => p.CreatedDate);
             ViewBag.BookList = books.ToList();
             return View(books.ToList());
         }
@@ -35,12 +36,17 @@ namespace BookStore.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.CategoryList = db.Categories.ToList();
             return View(book);
         }
+
+
         [Authorize(Roles = "Admin, Staff")]
         // GET: Book/Create
         public ActionResult Create()
         {
+            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name");
             return View();
         }
 
@@ -50,15 +56,27 @@ namespace BookStore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Staff")]
-        public ActionResult Create([Bind(Include = "BookId,Title,Description,Author,Type,Price,Image,CreatedDate")] Book book)
+        public ActionResult Create([Bind(Include = "BookId,Title,Description,Author,Type,Price,Image,CategoryId")] Book book, HttpPostedFileBase ImageFile)
         {
             if (ModelState.IsValid)
             {
+                book.CreatedDate = DateTime.Now;
+
+                // Handle file upload
+                if (ImageFile != null && ImageFile.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(ImageFile.FileName);
+                    var filePath = Path.Combine(Server.MapPath("~/Images"), fileName);
+                    ImageFile.SaveAs(filePath);
+                    book.Image = "/Images/" + fileName; 
+                }
+
                 db.Books.Add(book);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
+            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", book.CategoryId);
             return View(book);
         }
 
@@ -75,6 +93,9 @@ namespace BookStore.Controllers
             {
                 return HttpNotFound();
             }
+
+            // Populate a SelectList with categories to display in a dropdown list
+            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", book.CategoryId);
             return View(book);
         }
 
@@ -84,16 +105,29 @@ namespace BookStore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Staff")]
-        public ActionResult Edit([Bind(Include = "BookId,Title,Description,Author,Type,Price,Image,CreatedDate")] Book book)
+        public ActionResult Edit([Bind(Include = "BookId,Title,Description,Author,Price,CategoryId")] Book book)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(book).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var originalBook = db.Books.Find(book.BookId);
+
+                if (originalBook != null)
+                {
+                    book.Image = originalBook.Image;
+                    originalBook.CreatedDate = book.CreatedDate;
+
+                    db.Entry(originalBook).CurrentValues.SetValues(book);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+
+            // If the model state is not valid, repopulate the category dropdown list
+            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", book.CategoryId);
             return View(book);
         }
+
+
 
         // GET: Book/Delete/5
         [Authorize(Roles = "Admin, Staff")]

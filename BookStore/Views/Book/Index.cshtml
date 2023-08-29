@@ -4,60 +4,52 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<div class="container">
+    <h2>Books</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.Author)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </th>
-        <th></th>
-    </tr>
+    <p>
+        <a class="btn btn-primary" href="@Url.Action("Create")">Create New</a>
+        <a class="btn btn-primary" href="@Url.Action("Create", "Category")">Add Category</a>
+    </p>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.Author)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.BookId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.BookId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BookId })
-        </td>
-    </tr>
-}
-
-</table>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Image)</th>
+                <th>@Html.DisplayNameFor(model => model.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Author)</th>
+                <th>@Html.DisplayNameFor(model => model.Price)</th>
+                <th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
+                <th>@Html.DisplayNameFor(model => model.Category.Name)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Image))
+                        {
+                            <img src="@Url.Content(item.Image)" style="height:100px" />
+                        }
+                        else
+                        {
+                            <p>Unavailable</p>
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Author)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Category.Name)</td>
+                    <td>
+                        <a class="btn btn-info" href="@Url.Action("Edit", new { id = item.BookId })">Edit</a>
+                        <a class="btn btn-info" href="@Url.Action("Details", new { id = item.BookId })">Details</a>
+                        <a class="btn btn-danger" href="@Url.Action("Delete", new { id = item.BookId })">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

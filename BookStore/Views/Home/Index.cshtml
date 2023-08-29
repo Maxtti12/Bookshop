@@ -12,32 +12,25 @@
                 <div class="hero__categories">
                     <div class="hero__categories__all">
                         <i class="fa fa-bars"></i>
-                        <span>All Types</span>
+                        <span>All Categories</span>
                     </div>
                     <ul>
-                        <li><a href="#">All</a></li>
-                        <li><a href="#">Fiction</a></li>
-                        <li><a href="#">NonFiction</a></li>
-                        <li><a href="#">Honnor</a></li>
-                        <li><a href="#">Science Fiction</a></li>
-                        <li><a href="#">Document</a></li>
-                        <li><a href="#">Romance</a></li>
-                        <li><a href="#">Fairytale</a></li>
-                        <li><a href="#">Fantasy</a></li>
-                        <li><a href="#">Tragedy</a></li>
-                        <li><a href="#">Adventure</a></li>
+                        @foreach (var category in ViewBag.CategoryList)
+                        {
+                            <li style="margin-left: 40px"><a href="/?query=@category.CategoryId">@category.Name</a></li>
+                        }
                     </ul>
                 </div>
             </div>
             <div class="col-lg-9">
                 <div class="hero__search">
                     <div class="hero__search__form">
-                        <form action="#">
+                        <form action="/" method="GET">
                             <div class="hero__search__categories">
-                                All Categories
+                                Searching
                                 <span class="arrow_carrot-down"></span>
                             </div>
-                            <input type="text" placeholder="What do yo u need?">
+                            <input type="text" name="query" placeholder="Input book name">
                             <button type="submit" class="site-btn">SEARCH</button>
                         </form>
                     </div>
@@ -51,58 +44,31 @@
                         </div>
                     </div>
                 </div>
-                <div class="hero__item set-bg" data-setbg="img/hero/banner.jpg">
-                    <div class="hero__text">
-                        <span>FPT Book</span>
-                        <h2>Books <br />From around the world</h2>
-                        <p>Free Pickup and Delivery Available</p>
-                        <a href="#" class="primary-btn">SHOP NOW</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Featured Section Begin -->
-<section class="featured spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-title">
-                    <h2>Featured Books</h2>
-                </div>
-                <div class="featured__controls">
-                    <ul>
-                        <li class="active" data-filter="*">All</li>
+                <div class="">
+                    <div class="row featured__filter">
                         @foreach (var item in Model)
                         {
-                            <li data-filter="@Html.DisplayFor(modelItem => item.Type)">@Html.DisplayFor(modelItem => item.Type)</li>
+                            <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
+                                <div class="featured__item">
+                                    <div class="featured__item__pic set-bg" data-setbg="img/featured/feature-1.jpg">
+                                        <a href="/book/Details/@Html.DisplayFor(modelItem => item.BookId)">
+                                            <img class="img-fluid" src="@Html.DisplayFor(modelItem => item.Image)" alt=""
+                                                 style="width: 100vw; height: 100vh; max-width: 100%; max-height: 100%;">
+                                        </a>
+                                        <ul class="featured__item__pic__hover">
+                                            <li><a href="/Cart/AddToCart?bookId=@Html.DisplayFor(modelItem => item.BookId)"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="featured__item__text">
+                                        <h4><a style="text-decoration:none; color:black" href="/book/Details/@Html.DisplayFor(modelItem => item.BookId)">@Html.DisplayFor(modelItem => item.Title)</a></h4>
+                                        <h3><strong>$@Html.DisplayFor(modelItem => item.Price)</strong></h3>
+                                    </div>
+                                </div>
+                            </div>
                         }
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row featured__filter">
-            @foreach (var item in Model)
-            {
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="img/featured/feature-1.jpg">
-                            <img style="width:100%; height:30vh" src="@Html.DisplayFor(modelItem => item.Image)" alt="">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h4><a style="text-decoration:none; color:black" href="#">@Html.DisplayFor(modelItem => item.Title)</a></h4>
-                            <h3><strong>$@Html.DisplayFor(modelItem => item.Price)</strong></h3>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
     </div>
 </section>
-<!-- Featured Section End -->

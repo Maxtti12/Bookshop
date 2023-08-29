@@ -619,7 +619,6 @@ ol {
         position: absolute;
         right: 18px;
         top: 9px;
-        content: "3";
         font-family: "ElegantIcons";
         font-size: 18px;
         color: #ffffff;
@@ -877,7 +876,7 @@ ol {
 .featured__item__pic__hover {
     position: absolute;
     left: 0;
-    bottom: -50px;
+    bottom: -70px;
     width: 100%;
     text-align: center;
     -webkit-transition: all, 0.5s;
@@ -3600,3 +3599,10 @@ html{
     font-size:18px
 }
 
+ol, ul{
+    padding-left: 0rem !important;
+}
+
+input.form-control{
+    height: 40px !important;
+}

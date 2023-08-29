@@ -13,6 +13,7 @@ namespace BookStore.Models
         public virtual DbSet<Book> Books { get; set; }
 
         public System.Data.Entity.DbSet<BookStore.Models.Order> Orders { get; set; }
+        public System.Data.Entity.DbSet<BookStore.Models.Category> Categories { get; set; }
     }
 
     //public class MyEntity

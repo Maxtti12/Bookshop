@@ -4,60 +4,42 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<div class="container">
+    <h2>Order List</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.BookId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CustomerId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Delivery)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Payment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OrderPrice)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.BookId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustomerId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Delivery)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Payment)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OrderPrice)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.OrderId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.OrderId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.OrderId })
-        </td>
-    </tr>
-}
-
-</table>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Order ID
+                </th>
+                <th>
+                    Customer ID
+                </th>
+                <th>
+                    Created Date
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CustomerId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.OrderId }, new { @class = "btn btn-info btn-sm" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -10,7 +10,6 @@
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = false;
             ContextKey = "BookStore.Models.BookDbContext";
         }
 

@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.Web;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookStore.Models
 {
-
-    public enum Type
-    {
-        Fiction, Nonfiction, Classics, Tragedy, ScienceFiction, Fantasy, Fairytale, Adventure,
-        Satire, Romance, Horror, Dystopian
-    }
-
     public class Book
     {
         [Required]
@@ -26,21 +18,21 @@ namespace BookStore.Models
 
         public string Author { get; set; }
 
+        [NotMapped]
+        public HttpPostedFileBase ImageFile { get; set; }
         public string Image { get; set; }
 
-
-        [DefaultValue("None")]
-        public Type? Type { get; set; }
-
         [DefaultValue(0)]
-        public int Price { get;set; }
+        public int Price { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Created Date")]
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
-        //public virtual Author Author { get; set; }
+        [Display(Name = "Category")]
+        public int? CategoryId { get; set; }
 
+        public virtual Category Category { get; set; }
     }
 }
